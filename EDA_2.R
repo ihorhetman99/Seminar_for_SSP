@@ -5,6 +5,7 @@ library(rstatix)
 library(tidyverse)
 library(emmeans)
 library(cowplot)
+library(ggpubr)
 data = read.csv('training_functionals.csv')
 data$diagnosis = as.factor(data$diagnosis)
 
@@ -47,20 +48,20 @@ for (i in seq(6, 93)) {
 #x = diagnosis
 #"F3frequency_sma3nz_stddevNorm" nope
 #"F2frequency_sma3nz_stddevNorm" nope
-#"F2bandwidth_sma3nz_amean" nope
+#"F2frequency_sma3nz_amean" some results
 #"HNRdBACF_sma3nz_amean" some results
 #"F0semitoneFrom27.5Hz_sma3nz_percentile80.0" some results
 #"F0semitoneFrom27.5Hz_sma3nz_percentile50.0" nope 
 #"F0semitoneFrom27.5Hz_sma3nz_amean" some results
 
 bxp_gender <- ggboxplot(
-  data, x = "gender", y = "F0semitoneFrom27.5Hz_sma3nz_amean",
+  data, x = "gender", y = "loudnessPeaksPerSec",
   color = "diagnosis", palette = "jco"
 )
 bxp_gender
 
 bxp_diagnosis <- ggboxplot(
-  data, x = "diagnosis", y = "F0semitoneFrom27.5Hz_sma3nz_amean",
+  data, x = "diagnosis", y = "loudnessPeaksPerSec",
   color = "gender", palette = "jco"
 )
 bxp_diagnosis
@@ -68,10 +69,10 @@ bxp_diagnosis
 
 pwc <- data %>% 
   group_by(gender) %>%
-  emmeans_test(F0semitoneFrom27.5Hz_sma3nz_amean ~ diagnosis, 
+  emmeans_test(F3bandwidth_sma3nz_amean ~ diagnosis, 
                p.adjust.method = "bonferroni") 
 
-res.aov = data%>%anova_test(F0semitoneFrom27.5Hz_sma3nz_amean 
+res.aov = data%>%anova_test(F3bandwidth_sma3nz_amean 
                             ~ gender*diagnosis)
 
 pwc <- pwc %>% add_xy_position(x = "gender")
@@ -84,7 +85,7 @@ bxp_gender +
 
 pwc <- data %>% 
   group_by(diagnosis) %>%
-  emmeans_test(F0semitoneFrom27.5Hz_sma3nz_amean ~ gender, 
+  emmeans_test(F3bandwidth_sma3nz_amean ~ gender, 
                p.adjust.method = "bonferroni") 
 
 pwc <- pwc %>% add_xy_position(x = "diagnosis")
@@ -145,16 +146,17 @@ draw_frec = function(dataname){
     geom_point(aes(color = 'red'))+
     geom_point(aes(y = dataname$F2frequency_sma3nz_amean, color = 'green'))+
     geom_point(aes(y = dataname$F3frequency_sma3nz_amean, color = 'purple'))+
+    geom_point(aes(y = dataname$F0semitoneFrom27.5Hz_sma3nz_amean, color = 'blue'))+
     scale_color_manual(labels = c("F1frequency_sma3nz_amean", 
                                   "F2frequency_sma3nz_amean",
-                                  "F3frequency_sma3nz_amean"),
-                       values = c("red", "green", "purple"))+
+                                  "F3frequency_sma3nz_amean",
+                                  "F0semitoneFrom27.5Hz_sma3nz_amean"),
+                       values = c("red", "green", "purple", "blue"))+
     labs(title = deparse(substitute(dataname)), 
          x = 'start time', 
          y = 'frequences')+
     theme_bw()
 }
-summary(S001_sw$F3frequency_sma3nz_amean)
 
 draw_frec(S001_sw)
 draw_frec(S002_sw)
@@ -168,4 +170,37 @@ draw_frec(S127_sw)
 draw_frec(S149_sw)
 
 
+
+#-----------------------------------------------------
+names(data)
+#x = diagnosis
+#"F2frequency_sma3nz_amean" some results
+#"HNRdBACF_sma3nz_amean" some results
+#"F0semitoneFrom27.5Hz_sma3nz_percentile80.0" some results
+#"F0semitoneFrom27.5Hz_sma3nz_amean" some results
+
+#x = gender
+#"F1frequency_sma3nz_amean" some results 
+
+features = c("F2frequency_sma3nz_amean", "HNRdBACF_sma3nz_amean", 
+             "F0semitoneFrom27.5Hz_sma3nz_percentile80.0", 
+             "F0semitoneFrom27.5Hz_sma3nz_amean",
+             "F1frequency_sma3nz_amean")
+
+draw_plots_4 = function(data, features, index){
+  bxp_gender <- ggboxplot(
+    data, x = "gender", y = features[index],
+    color = "diagnosis", palette = "jco"
+  )
+  
+  bxp_diagnosis <- ggboxplot(
+    data, x = "diagnosis", y = features[index],
+    color = "gender", palette = "jco"
+  )
+  
+  print(ggarrange(bxp_diagnosis, bxp_gender, 
+                 ncol = 2, nrow = 1))
+}
+
+draw_plots_4(data, features, 6)
 
