@@ -1,0 +1,99 @@
+
+
+
+
+
+------------------------------------------------
+False Negative Rate (FNR)
+
+Original group 0 model:
+Accuracy:       0.591
+F.P. cost:      0.400
+F.N. cost:      0.417
+Base rate:      0.545
+Avg. score:     0.500
+
+Original group 1 model:
+Accuracy:       0.750
+F.P. cost:      0.286
+F.N. cost:      0.222
+Base rate:      0.562
+Avg. score:     0.562
+
+Equalized odds group 0 model:
+Accuracy:       0.591
+F.P. cost:      0.400
+F.N. cost:      0.417
+Base rate:      0.545
+Avg. score:     0.500
+
+Equalized odds group 1 model:
+Accuracy:       0.500
+F.P. cost:      0.000
+F.N. cost:      0.889
+Base rate:      0.562
+Avg. score:     0.062
+
+-----------------------------------------------------------------------
+False Positive Rate (FPR)
+
+0.5454545454545454 0.3333333333333333
+0.23076923076923078 0.2222222222222222
+Original group 0 model:
+Accuracy:       0.609
+F.P. cost:      0.231
+F.N. cost:      0.600
+Base rate:      0.435
+Avg. score:     0.304
+
+Original group 1 model:
+Accuracy:       0.774
+F.P. cost:      0.222
+F.N. cost:      0.231
+Base rate:      0.419
+Avg. score:     0.452
+
+Equalized odds group 0 model:
+Accuracy:       0.609
+F.P. cost:      0.231
+F.N. cost:      0.600
+Base rate:      0.435
+Avg. score:     0.304
+
+Equalized odds group 1 model:
+Accuracy:       0.742
+F.P. cost:      0.222
+F.N. cost:      0.308
+Base rate:      0.419
+Avg. score:     0.419
+
+-----------------------------------------------------------------------
+Weighted (FNR + FPR)
+
+Original group 0 model:
+Accuracy:       0.714
+F.P. cost:      0.385
+F.N. cost:      0.125
+Base rate:      0.381
+Avg. score:     0.571
+
+Original group 1 model:
+Accuracy:       0.788
+F.P. cost:      0.105
+F.N. cost:      0.357
+Base rate:      0.424
+Avg. score:     0.333
+
+Equalized odds group 0 model:
+Accuracy:       0.714
+F.P. cost:      0.385
+F.N. cost:      0.125
+Base rate:      0.381
+Avg. score:     0.571
+
+Equalized odds group 1 model:
+Accuracy:       0.758
+F.P. cost:      0.053
+F.N. cost:      0.500
+Base rate:      0.424
+Avg. score:     0.242
